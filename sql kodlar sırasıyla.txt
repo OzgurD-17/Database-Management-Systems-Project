@@ -1,0 +1,487 @@
+--Kisi Tablosu
+CREATE TABLE Kisi (
+    kisi_id SERIAL PRIMARY KEY,
+    ad VARCHAR(50) NOT NULL,
+    soyad VARCHAR(50) NOT NULL,
+    eposta VARCHAR(100) UNIQUE NOT NULL,
+    telefon VARCHAR(15) UNIQUE,
+    adres VARCHAR(255),
+    saglik_durumu TEXT,
+    uye BOOLEAN,
+   calisan BOOLEAN
+   CONSTRAINT eposta_format CHECK (eposta ~ '^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$')
+);
+
+--KİŞİ TABLOSUNA VERİ EKLEME
+INSERT INTO Kisi (ad, soyad, eposta, telefon, adres, saglik_durumu, uye, calisan) 
+VALUES 
+('Ali', 'Yılmaz', 'aliyilmaz@example.com', '5551234567', 'Ankara, Türkiye', 'Sağlıklı', TRUE, FALSE),
+('Ayşe', 'Demir', 'aysedemir@example.com', '5329876543', 'İstanbul, Türkiye', 'Alerji', FALSE, TRUE),
+('Mehmet', 'Kara', 'mehmetkara@example.com', NULL, 'İzmir, Türkiye', 'Sağlıklı', TRUE, TRUE),
+('Fatma', 'Şahin', 'fatmasahin@example.com', '5455556677', NULL, 'Kronik hastalık', FALSE, FALSE),
+('Can', 'Turan', 'canturan@example.com', '5302223344', 'Bursa, Türkiye', NULL, TRUE, TRUE);
+
+
+--Çalışan tablosu
+CREATE TABLE Calisan (
+    kisi_id INT PRIMARY KEY REFERENCES Kisi(kisi_id),
+    uzmanlik VARCHAR(100) NOT NULL,
+    deneyim INT CHECK (deneyim >= 0),
+    maas NUMERIC(10, 2) CHECK (maas > 0)
+);
+
+--Çalışan tablosuna veri ekleme
+INSERT INTO Calisan (kisi_id, uzmanlik, deneyim, maas)
+VALUES
+    (2, 'Fitness Eğitmeni', 5, 12000.50),
+    (3, 'Temizlikçi', 3, 10000.00),
+    (5, 'Siber Güvenlik', 7, 14000.75);
+
+--İşçi tablosu
+CREATE TABLE Isci (
+    kisi_id INT PRIMARY KEY REFERENCES Calisan(kisi_id)
+);
+
+--İşçi tablosuna veri ekleme
+INSERT INTO Isci (kisi_id)
+VALUES
+    (3),
+    (5);
+
+--Eğitmen tablosu
+CREATE TABLE Egitmen (
+    kisi_id INT PRIMARY KEY REFERENCES Calisan(kisi_id)
+);
+
+--Eğitmen tablosuna veri ekleme
+INSERT INTO Egitmen (kisi_id)
+VALUES
+    (2);
+
+
+--Yarışma tablosu
+CREATE TABLE Yarisma (
+    yarisma_id SERIAL PRIMARY KEY,
+    ad VARCHAR(100) NOT NULL,
+    tarih DATE NOT NULL,
+    yer VARCHAR(100),
+    odul VARCHAR(100),
+    kazanan VARCHAR(100),
+    sponsor VARCHAR(100)
+);
+
+--Yarışma Tablosuna veri ekleme
+INSERT INTO Yarisma (ad, tarih, yer, odul, kazanan, sponsor)
+VALUES
+    ('10Km Koşu Yarışması', '10-10-2024', 'İstanbul', '50.000TL', NULL, NULL);
+
+
+--Yarışmaya Katılım tablosu
+CREATE TABLE YarismayaKatilim (
+    katilim_id SERIAL PRIMARY KEY,
+    kisi_id INT REFERENCES Kisi(kisi_id),
+    yarisma_id INT REFERENCES Yarisma(yarisma_id),
+    katilim_tarihi DATE NOT NULL
+);
+--Yarışmaya Katılım tablosuna veri ekleme
+INSERT INTO YarismayaKatilim (kisi_id, yarisma_id, katilim_tarihi)
+VALUES
+    (1, 1, '9-10-2024');
+
+--Beslenme Programı tablosu
+CREATE TABLE BeslenmeProgrami (
+    beslenme_id SERIAL PRIMARY KEY,
+    hedef VARCHAR(100),
+    baslangic_tarihi DATE NOT NULL,
+    bitis_tarihi DATE NOT NULL,
+    kisi_id INT REFERENCES Egitmen(kisi_id),
+    CONSTRAINT bitis_tarihi_kontrol CHECK (bitis_tarihi > baslangic_tarihi) -- Bitiş tarihi başlangıç tarihinden sonra olmalı
+);
+--Beslenme Programı tablosuna veri ekleme
+INSERT INTO BeslenmeProgrami (hedef, baslangic_tarihi, bitis_tarihi, kisi_id)
+VALUES
+    ('Kilo Verme', '9-10-2024', '9-11-2024', 2);
+
+
+--Antrenman Programı tablosu
+CREATE TABLE AntrenmanProgrami (
+    program_id SERIAL PRIMARY KEY,
+    hedef VARCHAR(100),
+    baslangic_tarihi DATE NOT NULL,
+    bitis_tarihi DATE NOT NULL,
+    beslenme_id INTEGER REFERENCES BeslenmeProgrami(beslenme_id),
+    CONSTRAINT bitis_tarihi_kontrol CHECK (bitis_tarihi > baslangic_tarihi) -- Bitiş tarihi başlangıç tarihinden sonra olmalı
+);
+--Antrenman Programı tablosuna veri ekleme
+INSERT INTO AntrenmanProgrami (hedef, baslangic_tarihi, bitis_tarihi, beslenme_id)
+VALUES
+    ('Kilo Verme', '9-10-2024', '9-11-2024', 1);
+
+--Üye Tablosu
+CREATE TABLE Uye (
+    kisi_id INT PRIMARY KEY REFERENCES Kisi(kisi_id),
+    program_id INT REFERENCES AntrenmanProgrami(program_id)
+);
+--Üye Tablosuna veri ekleme
+INSERT INTO Uye (kisi_id, program_id)
+VALUES
+    (1, 1),
+    (3, 1),
+    (5, 1);
+
+--Üyelik Paket tablosu
+CREATE TABLE UyelikPaket (
+    paket_id SERIAL PRIMARY KEY,
+    paket_adi VARCHAR(100),
+    sure INTEGER CHECK (sure > 0),
+    fiyat NUMERIC(10, 2) CHECK (fiyat >= 0)
+);
+--Üyelik Paket tablosuna veri ekleme
+INSERT INTO UyelikPaket (paket_id, paket_adi, sure, fiyat)
+VALUES
+    (1, 'Kilo Verme Deneme Paketi', 30, 4000);
+
+
+--Üyelik tablosu
+CREATE TABLE Uyelik (
+    uyelik_id SERIAL PRIMARY KEY,
+    kisi_id INT REFERENCES Uye(kisi_id),
+    paket_id INT REFERENCES UyelikPaket(paket_id),
+    baslangic_tarihi DATE,
+    bitis_tarihi DATE,
+   CONSTRAINT bitis_tarihi_kontrol CHECK (bitis_tarihi > baslangic_tarihi) -- Bitiş tarihi başlangıç tarihinden sonra olmalı
+);
+--Üyelik tablosuna veri ekleme
+INSERT INTO Uyelik (kisi_id, paket_id, baslangic_tarihi, bitis_tarihi)
+VALUES
+    (1, 1, '9-10-2024', '9-11-2024');
+
+
+--Ödeme tablosu
+CREATE TABLE Odeme (
+    odeme_id SERIAL PRIMARY KEY,
+    kisi_id INT REFERENCES Uye(kisi_id),
+    tutar NUMERIC(10, 2) CHECK (tutar > 0),
+    odeme_tarihi DATE NOT NULL,
+    uyelik_id INT REFERENCES Uyelik(uyelik_id)
+);
+--Ödeme tablosuna veri ekleme
+INSERT INTO Odeme (kisi_id, tutar, odeme_tarihi, uyelik_id)
+VALUES
+    (1, 4000, '9-10-2024', 1);
+
+--Sınıf tablosu
+CREATE TABLE Sinif (
+    sinif_id SERIAL PRIMARY KEY,
+    sinif_adi VARCHAR(100) NOT NULL,
+    kapasite INTEGER CHECK (kapasite > 0),
+    egitmen_id INT REFERENCES Egitmen(kisi_id)
+);
+--Sınıf tablosuna veri ekleme
+INSERT INTO Sinif (sinif_id, sinif_adi, kapasite, egitmen_id)
+VALUES
+    (1, 'Kilo Verme Sınıfı', 20, 2);
+
+--Değerlendirme tablosu
+CREATE TABLE Degerlendirme (
+    degerlendirme_id SERIAL PRIMARY KEY,
+    kisi_id INT REFERENCES Uye(kisi_id),
+    sinif_id INT REFERENCES Sinif(sinif_id),
+    egitmen_id INT REFERENCES Egitmen(kisi_id),
+    puan INTEGER CHECK (puan >= 0 AND puan <= 10),
+    yorum TEXT,
+    tarih DATE NOT NULL
+);
+--Değerlendirme tablosuna veri ekleme
+INSERT INTO Degerlendirme (kisi_id, sinif_id, egitmen_id, puan, yorum, tarih)
+VALUES
+    (1, 1, 2, 10, 'Eğitmenimi ve burayı çok sevdim. Harika!', '10-10-2024');
+
+
+--Sınıf Rezervasyon tablosu
+CREATE TABLE SinifRezervasyon (
+    rezervasyon_id SERIAL PRIMARY KEY,
+    kisi_id INT REFERENCES Uye(kisi_id),
+    sinif_id INT REFERENCES Sinif(sinif_id),
+    baslangic_tarihi DATE NOT NULL,
+    bitis_tarihi DATE NOT NULL,
+    CONSTRAINT rezervasyon_tarih_kontrol CHECK (bitis_tarihi > baslangic_tarihi) -- Bitiş tarihi başlangıç tarihinden sonra olmalı
+);
+--SinifRezervasyon tablosuna veri ekleme
+INSERT INTO SinifRezervasyon (kisi_id, sinif_id, baslangic_tarihi, bitis_tarihi)
+VALUES
+    (1, 1, '9-10-2024', '9-11-2024');
+
+--Ekipman tablosu
+CREATE TABLE Ekipman (
+    ekipman_id SERIAL PRIMARY KEY,
+    ekipman_adi VARCHAR(100) NOT NULL,
+    bakim_tarihi DATE,
+    durum VARCHAR(50) NOT NULL CHECK (durum IN ('Kullanılabilir', 'Bakımda', 'Bozuk')) -- Durum belirli değerlerden biri olmalı
+);
+--Ekipman tablosuna veri ekleme
+INSERT INTO Ekipman (ekipman_id, ekipman_adi, bakim_tarihi, durum)
+VALUES
+    (1, 'Yağ Yaktıran Alet 4000', '1-9-2024', 'Kullanılabilir');
+
+--Üye Ekipman tablosu
+CREATE TABLE UyeEkipman (
+    uye_ekipman_id SERIAL PRIMARY KEY,
+    kisi_id INT REFERENCES Uye(kisi_id),
+    ekipman_id INT REFERENCES Ekipman(ekipman_id),
+    kullanim_tarihi DATE NOT NULL
+);
+--Üye Ekipman tablosuna veri ekleme
+INSERT INTO UyeEkipman (kisi_id, ekipman_id, kullanim_tarihi)
+VALUES
+    (1, 1, '10-9-2024');
+
+
+--Ders tablosu
+CREATE TABLE Ders (
+    ders_id SERIAL PRIMARY KEY,
+    ders_adi VARCHAR(50) NOT NULL,
+    baslangic_saati TIME NOT NULL,
+    bitis_saati TIME NOT NULL
+);
+--Ders tablosuna veri ekleme
+INSERT INTO Ders (ders_id, ders_adi, baslangic_saati, bitis_saati)
+VALUES
+    (1, 'Kilo Verme Sanatı', '10:00:00', '12:00:00');
+
+--Yoklama tablosu
+CREATE TABLE Yoklama (
+    yoklama_id SERIAL PRIMARY KEY,
+    ders_id INT REFERENCES Ders(ders_id),
+    kisi_id INT REFERENCES Uye(kisi_id),
+    sinif_id INT REFERENCES Sinif(sinif_id),
+    katilim BOOLEAN DEFAULT FALSE,
+    tarih DATE NOT NULL
+);
+--Yoklama tablosuna veri ekleme
+INSERT INTO Yoklama (ders_id, kisi_id, sinif_id, katilim, tarih)
+VALUES
+    (1, 1, 1, TRUE, '10-10-2024');
+
+--Sınıf Ders tablosu
+CREATE TABLE SinifDers (
+    sinifders_id SERIAL PRIMARY KEY,
+    sinif_id INT REFERENCES Sinif(sinif_id),
+    ders_id INT REFERENCES Ders(ders_id)
+);
+--Sınıf Ders tablosuna veri ekleme
+INSERT INTO SinifDers (sinif_id, ders_id)
+VALUES
+    (1, 1);
+    
+    
+    
+
+--Fonksiyon1
+CREATE OR REPLACE FUNCTION ToplamOdemeHesapla(kisi INT)
+RETURNS NUMERIC AS $$
+DECLARE
+    toplam_odeme NUMERIC;
+BEGIN
+    SELECT COALESCE(SUM(tutar), 0) INTO toplam_odeme
+    FROM Odeme
+    WHERE kisi_id = kisi;
+
+    RETURN toplam_odeme;
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT * FROM ToplamOdemeHesapla(1);
+
+
+--Fonksiyon2
+CREATE OR REPLACE FUNCTION YarismaKatilimciListesi(yarisma_id_input INT)
+RETURNS TABLE(
+    kisi_ad VARCHAR,
+    kisi_soyad VARCHAR
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT k.ad, k.soyad
+    FROM Kisi k
+    JOIN YarismayaKatilim yk ON k.kisi_id = yk.kisi_id
+    WHERE yk.yarisma_id = yarisma_id_input;
+END;
+$$ LANGUAGE plpgsql;
+
+
+SELECT * FROM YarismaKatilimciListesi(1);
+
+
+--Fonksiyon3
+CREATE OR REPLACE FUNCTION EkipmanDurumuGuncelle(ekipman_numarasi INT, yeni_durum VARCHAR)
+RETURNS VOID AS $$
+BEGIN
+    UPDATE Ekipman
+    SET durum = yeni_durum
+    WHERE ekipman_id = ekipman_numarasi;
+
+    RAISE NOTICE 'Ekipman durumu güncellendi.';
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT EkipmanDurumuGuncelle(1, 'Bakımda');
+
+
+--Fonksiyon4
+CREATE OR REPLACE FUNCTION SinifKatilimSayisi(sinif_numara INT)
+RETURNS INTEGER AS $$
+DECLARE
+    katilim_sayisi INTEGER;
+BEGIN
+    SELECT COUNT(*) INTO katilim_sayisi
+    FROM SinifRezervasyon
+    WHERE sinif_id = sinif_numara;
+
+    RETURN katilim_sayisi;
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT SinifKatilimSayisi(1);
+
+
+--Fonksiyon5
+CREATE OR REPLACE FUNCTION EkipmanUygunlukKontrol(ekipman_id_input INT)
+RETURNS BOOLEAN AS $$
+DECLARE
+    ekipman_durumu VARCHAR;
+BEGIN
+    -- Ekipmanın mevcut durumunu al
+    SELECT durum INTO ekipman_durumu
+    FROM Ekipman
+    WHERE ekipman_id = ekipman_id_input;
+
+    -- Durumu kontrol et
+    IF ekipman_durumu = 'Kullanılabilir' THEN
+        RETURN TRUE; -- Kullanılabilir
+    ELSE
+        RETURN FALSE; -- Alınamaz
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT EkipmanUygunlukKontrol(1); 
+
+--Fonksiyon6
+CREATE OR REPLACE FUNCTION EkipmanGecerlilikKontrol()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NOT EkipmanUygunlukKontrol(NEW.ekipman_id) THEN
+        RAISE EXCEPTION 'Bu ekipman bozuk veya bakımda, kullanılamaz!';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+--Tetikleyici1
+CREATE TRIGGER TriggerEkipmanGecerlilikKontrol
+BEFORE INSERT ON UyeEkipman
+FOR EACH ROW
+EXECUTE FUNCTION EkipmanGecerlilikKontrol();
+
+
+--Fonksiyon7
+CREATE OR REPLACE FUNCTION SinifDoluMu(sinif_id_input INT)
+RETURNS BOOLEAN AS $$
+DECLARE
+    mevcut_katilim_sayisi INT;
+    kapasite INT;
+BEGIN
+    -- Daha önce oluşturulan fonksiyon ile mevcut katılım sayısını al
+    mevcut_katilim_sayisi := SinifKatilimSayisi(sinif_id_input);
+
+    -- Sınıf kapasitesini al
+    SELECT kapasite INTO kapasite
+    FROM Sinif
+    WHERE sinif_id = sinif_id_input;
+
+    -- Kapasiteyi kontrol et
+    IF mevcut_katilim_sayisi >= kapasite THEN
+        RETURN TRUE; -- Sınıf dolu
+    ELSE
+        RETURN FALSE; -- Sınıf dolu değil
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+--Fonksiyon8
+CREATE OR REPLACE FUNCTION SinifRezervasyonKontrol()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF SinifDoluMu(NEW.sinif_id) THEN
+        RAISE EXCEPTION 'Bu sınıf dolu, yeni rezervasyon yapılamaz!';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+--Tetikleyici2
+CREATE TRIGGER TriggerSinifRezervasyonKontrol
+BEFORE INSERT ON SinifRezervasyon
+FOR EACH ROW
+EXECUTE FUNCTION SinifRezervasyonKontrol();
+
+
+--Fonksiyon9
+CREATE OR REPLACE FUNCTION YarismayaKatilimTarihKontrol()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Katılım tarihi, yarışma tarihinden sonraysa hata fırlat
+    IF NEW.katilim_tarihi > (SELECT tarih FROM Yarisma WHERE yarisma_id = NEW.yarisma_id) THEN
+        RAISE EXCEPTION 'Katılım tarihi, yarışma tarihinden sonraki bir tarih olamaz!';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+--Trigger3
+CREATE TRIGGER TriggerYarismayaKatilimTarihKontrol
+BEFORE INSERT ON YarismayaKatilim
+FOR EACH ROW
+EXECUTE FUNCTION YarismayaKatilimTarihKontrol();
+
+
+--Fonksiyon10
+CREATE OR REPLACE FUNCTION UyelikBaslangicTarihKontrol()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Eğer başlangıç tarihi bugünden küçükse hata fırlat
+    IF NEW.baslangic_tarihi < CURRENT_DATE THEN
+        RAISE EXCEPTION 'Üyelik başlangıç tarihi geçmiş bir tarih olamaz!';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+--Trigger4
+CREATE TRIGGER TriggerUyelikBaslangicTarihKontrol
+BEFORE INSERT ON Uyelik
+FOR EACH ROW
+EXECUTE FUNCTION UyelikBaslangicTarihKontrol();
+
+
+--Saklı Yordam1
+CREATE OR REPLACE PROCEDURE OdemeGecmisi(kisi_id_input INT)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- Üyenin ödeme geçmişini göster
+    RAISE NOTICE 'Ödeme Geçmişi:';
+    PERFORM odeme_id, tutar, odeme_tarihi 
+    FROM Odeme
+    WHERE kisi_id = kisi_id_input;
+
+    -- Üyenin toplam ödemesini hesapla ve göster
+    RAISE NOTICE 'Toplam Ödeme: %', COALESCE(SUM(tutar), 0)
+    FROM Odeme
+    WHERE kisi_id = kisi_id_input;
+END;
+$$;
+
+-- Saklı yordamı çağırma
+CALL OdemeGecmisi(1);
+
