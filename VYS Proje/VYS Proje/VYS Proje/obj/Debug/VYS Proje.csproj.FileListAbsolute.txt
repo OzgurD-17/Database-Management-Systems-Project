@@ -1,0 +1,54 @@
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\bin\Debug\VYS Proje.exe.config
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\bin\Debug\VYS Proje.exe
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\bin\Debug\VYS Proje.pdb
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS Proje.csproj.AssemblyReference.cache
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS_Proje.Form1.resources
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS_Proje.Form10.resources
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS_Proje.Form11.resources
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS_Proje.Form12.resources
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS_Proje.Form13.resources
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS_Proje.Form14.resources
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS_Proje.Form15.resources
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS_Proje.Form16.resources
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS_Proje.Form17.resources
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS_Proje.Form18.resources
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS_Proje.Form19.resources
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS_Proje.Form2.resources
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS_Proje.Form20.resources
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS_Proje.Form21.resources
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS_Proje.Form3.resources
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS_Proje.Form4.resources
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS_Proje.Form5.resources
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS_Proje.Form6.resources
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS_Proje.Form7.resources
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS_Proje.Form8.resources
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS_Proje.Form9.resources
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS_Proje.Properties.Resources.resources
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS Proje.csproj.GenerateResource.cache
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS Proje.csproj.CoreCompileInputs.cache
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS Proje.exe
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS Proje.pdb
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\bin\Debug\Npgsql.dll
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\bin\Debug\System.Buffers.dll
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\bin\Debug\System.Memory.dll
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\bin\Debug\System.Text.Encodings.Web.dll
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\bin\Debug\System.Text.Json.dll
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\bin\Debug\System.Threading.Channels.dll
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\bin\Debug\System.ValueTuple.dll
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\bin\Debug\Npgsql.xml
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\bin\Debug\System.Buffers.xml
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\bin\Debug\System.Memory.xml
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\bin\Debug\System.Text.Encodings.Web.xml
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\bin\Debug\System.Text.Json.xml
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\bin\Debug\System.Threading.Channels.xml
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\bin\Debug\System.ValueTuple.xml
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS Proje.csproj.Up2Date
+C:\Users\Koray\source\repos\VYS Proje\VYS Proje\obj\Debug\VYS_Proje.Form22.resources
